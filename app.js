@@ -33,6 +33,7 @@ app.use(xss());
 // Swagger
 const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
+const { url } = require("./db.config");
 const swaggerDocument = YAML.load("./swagger.yaml");
 
 // middleware
@@ -44,15 +45,16 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use("/api/v1", mainRouter);
 app.use("/api/v1/tasks", tasks);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/category", productRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 9000;
+const port = process.env.NODE_DOCKER_PORT || 9000;
 
 const start = async () => {
 	try {
-		await connect(process.env.MONGO_URI);
+		await connect(url);
 		app.listen(port, console.log(`Server is listening on port ${port}`));
 	} catch (error) {
 		console.log(error);
