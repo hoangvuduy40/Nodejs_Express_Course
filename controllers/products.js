@@ -62,7 +62,7 @@ const getAllProducts = async (req, res) => {
 	result = result.skip(skip).limit(limit);
 	// 23
 	// 4 7 7 7 2
-
+	// Quang
 	const products = await result;
 	res.status(200).json({ products, nbHits: products.length });
 };
